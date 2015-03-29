@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+
+# testing
+.coverage
+.tox
+
+# packaging
+*.egg-info/
+dist/
+
+# dev environment
+.idea/
+venv/
+
+# other
+*.swp
