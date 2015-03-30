@@ -25,6 +25,7 @@ class Tox(TestCommand):
         sys.exit(errno)
 
 
+# TODO: specify installation requirements
 setup(
     name='datacheck',
     version='0.0.1',
@@ -44,6 +45,15 @@ setup(
         'Topic :: Utilities',
     ],
 
-    tests_require=['tox'],
+    install_requires=[
+        'future==0.14.3',
+    ],
+
+    # tox is responsible for setting up the test runner and its dependencies
+    # (e.g., code coverage tools) -- see the tox.ini file
+    tests_require=[
+        'tox==1.9.2',
+    ],
+
     cmdclass={'test': Tox},
 )
