@@ -26,6 +26,8 @@ def native_type(t):
         return native_data_type(0)
     elif t == list:  # future.types.newlist.newlist
         return native_data_type([])
+    elif t == dict:  # future.types.newdict.newdict
+        return native_data_type({})
     else:
         return t
 

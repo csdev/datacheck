@@ -40,6 +40,18 @@ class TypeValidationError(ValidationError):
         )
 
 
+class FieldValidationError(ValidationError):
+    def __init__(self, expected_field, path=None):
+        super(FieldValidationError, self).__init__(path=path)
+        self.expected_field = expected_field
+
+    def __str__(self):
+        return '%s: Missing required field "%s"' % (
+            path_to_str(self.path),
+            self.expected_field,
+        )
+
+
 class DataValidationError(ValidationError):
     def __init__(self):
         super(DataValidationError, self).__init__()

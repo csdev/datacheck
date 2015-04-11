@@ -1,12 +1,13 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
+from future.utils import iteritems
 
 import inspect
 
 from datacheck.compat import native_type
 import datacheck.exceptions as exc
-from datacheck.path import list_item_path, init_path
+from datacheck.path import init_path, list_item_path, dict_item_path
 
 
 def validate(data, schema, **kwargs):
@@ -74,3 +75,31 @@ class List(Validator):
             output_list.append(_validate(x, self.schema, path=subpath))
 
         return output_list
+
+
+class Dict(Validator):
+    def __init__(self, schema):
+        self.schema = schema
+
+    def validate(self, data, path=None, **kwargs):
+        if path is None:
+            path = init_path()
+
+        if not isinstance(data, dict):
+            raise exc.TypeValidationError(data, native_type(dict), path=path)
+
+        output_dict = {}
+
+        for key, item_schema in iteritems(self.schema):
+            try:
+                actual_value = data[key]
+            except KeyError:
+                raise exc.FieldValidationError(key, path=path)
+            else:
+                subpath = dict_item_path(path, key)
+                output_dict[key] = _validate(actual_value, item_schema,
+                                             path=subpath)
+
+        # TODO: handling of unknown fields
+
+        return output_dict
