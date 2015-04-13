@@ -5,7 +5,7 @@ import unittest
 
 from mock import patch
 
-from datacheck.exceptions import TypeValidationError
+from datacheck.exceptions import TypeValidationError, FieldValidationError
 
 
 class TestTypeValidationError(unittest.TestCase):
@@ -17,3 +17,11 @@ class TestTypeValidationError(unittest.TestCase):
 
         with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
             self.assertEqual(str(e), '<PATH>: Expected int, got NoneType (None)')
+
+
+class TestFieldValidationError(unittest.TestCase):
+    def test_field_validation_error(self):
+        e = FieldValidationError('foo')
+
+        with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
+            self.assertEqual(str(e), '<PATH>: Missing required field "foo"')
