@@ -3,7 +3,7 @@ from __future__ import (absolute_import, division,
 
 import unittest
 
-from datacheck.core import _get_validator, Validator, Type, List
+from datacheck.core import _get_validator, Validator, Type, List, Dict
 from datacheck.exceptions import SchemaError
 
 
@@ -32,6 +32,11 @@ class TestGetValidator(unittest.TestCase):
     def test_get_validator_list_error(self):
         with self.assertRaises(SchemaError):
             _get_validator([Validator(), Validator()])
+
+    def test_get_validator_dict_ok(self):
+        v = _get_validator({})
+        self.assertIsInstance(v, Dict)
+        self.assertEqual(v.schema, {})
 
     def test_get_validator_error(self):
         with self.assertRaises(SchemaError):

@@ -29,6 +29,8 @@ def _get_validator(schema):
             return List(schema[0])
         else:
             raise exc.SchemaError()
+    elif isinstance(schema, dict):
+        return Dict(schema)
 
     raise exc.SchemaError()
 
