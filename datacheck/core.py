@@ -6,7 +6,8 @@ from future.utils import iteritems
 import inspect
 
 from datacheck.compat import native_type
-import datacheck.exceptions as exc
+from datacheck.exceptions import (SchemaError, TypeValidationError,
+                                  FieldValidationError)
 from datacheck.path import init_path, list_item_path, dict_item_path
 
 
@@ -28,11 +29,11 @@ def _get_validator(schema):
         elif l == 1:
             return List(schema[0])
         else:
-            raise exc.SchemaError()
+            raise SchemaError()
     elif isinstance(schema, dict):
         return Dict(schema)
 
-    raise exc.SchemaError()
+    raise SchemaError()
 
 
 def _validate(data, schema, **kwargs):
@@ -48,13 +49,13 @@ class Validator(object):
 class Type(Validator):
     def __init__(self, expected_type):
         if not inspect.isclass(expected_type):
-            raise exc.SchemaError('expected_type must be a class type')
+            raise SchemaError('expected_type must be a class type')
 
         self.expected_type = expected_type
 
     def validate(self, data, path=None):
         if not isinstance(data, self.expected_type):
-            raise exc.TypeValidationError(data, self.expected_type, path=path)
+            raise TypeValidationError(data, self.expected_type, path=path)
 
         return data
 
@@ -68,7 +69,7 @@ class List(Validator):
             path = init_path()
 
         if not isinstance(data, list):
-            raise exc.TypeValidationError(data, native_type(list), path=path)
+            raise TypeValidationError(data, native_type(list), path=path)
 
         output_list = []
 
@@ -109,7 +110,7 @@ class Dict(Validator):
             path = init_path()
 
         if not isinstance(data, dict):
-            raise exc.TypeValidationError(data, native_type(dict), path=path)
+            raise TypeValidationError(data, native_type(dict), path=path)
 
         output_dict = {}
 
@@ -128,7 +129,7 @@ class Dict(Validator):
                     if field_spec.has_default:
                         output_dict[key] = field_spec.default_value
                 else:
-                    raise exc.FieldValidationError(key, path=path)
+                    raise FieldValidationError(key, path=path)
             else:
                 subpath = dict_item_path(path, key)
                 output_dict[key] = _validate(actual_value, item_schema,
