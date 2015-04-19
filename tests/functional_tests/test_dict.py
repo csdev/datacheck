@@ -3,7 +3,7 @@ from __future__ import (absolute_import, division,
 
 import unittest
 
-from datacheck import validate
+from datacheck import validate, Required, Optional
 from datacheck.exceptions import TypeValidationError, FieldValidationError
 
 
@@ -70,3 +70,23 @@ class TestDict(unittest.TestCase):
         expected_msg = r'id: Expected int, got float \(-0\.9999\)'
         with self.assertRaisesRegexp(TypeValidationError, expected_msg):
             validate(data, schema)
+
+    def test_dict_field_spec_ok(self):
+        data = {
+            'id': 1234,
+        }
+
+        schema = {
+            'id': Required(int),
+            'name': Optional(str).default(None)
+        }
+
+        result = validate(data, schema)
+
+        self.assertIsNot(result, data, 'input dict should not be modified')
+
+        expected = {
+            'id': 1234,
+            'name': None,
+        }
+        self.assertEqual(result, expected)
