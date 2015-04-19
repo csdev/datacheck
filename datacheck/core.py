@@ -41,7 +41,7 @@ def _validate(data, schema, **kwargs):
 
 
 class Validator(object):
-    def validate(self, data, path=None, **kwargs):
+    def validate(self, data, path=None):
         raise NotImplementedError()
 
 
@@ -52,7 +52,7 @@ class Type(Validator):
 
         self.expected_type = expected_type
 
-    def validate(self, data, path=None, **kwargs):
+    def validate(self, data, path=None):
         if not isinstance(data, self.expected_type):
             raise exc.TypeValidationError(data, self.expected_type, path=path)
 
@@ -63,7 +63,7 @@ class List(Validator):
     def __init__(self, schema):
         self.schema = schema
 
-    def validate(self, data, path=None, **kwargs):
+    def validate(self, data, path=None):
         if path is None:
             path = init_path()
 
@@ -104,7 +104,7 @@ class Dict(Validator):
     def __init__(self, schema):
         self.schema = schema
 
-    def validate(self, data, path=None, **kwargs):
+    def validate(self, data, path=None):
         if path is None:
             path = init_path()
 
