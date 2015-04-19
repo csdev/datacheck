@@ -79,6 +79,27 @@ class List(Validator):
         return output_list
 
 
+class DictField(object):
+    def __init__(self, schema):
+        self.schema = schema
+
+
+class Required(DictField):
+    pass
+
+
+class Optional(DictField):
+    def __init__(self, schema):
+        super(Optional, self).__init__(schema)
+        self.has_default = False
+        self.default_value = None
+
+    def default(self, x):
+        self.has_default = True
+        self.default_value = x
+        return self
+
+
 class Dict(Validator):
     def __init__(self, schema):
         self.schema = schema
@@ -92,11 +113,22 @@ class Dict(Validator):
 
         output_dict = {}
 
-        for key, item_schema in iteritems(self.schema):
+        for key, field_spec in iteritems(self.schema):
+            if isinstance(field_spec, DictField):
+                item_schema = field_spec.schema
+                is_optional = isinstance(field_spec, Optional)
+            else:
+                item_schema = field_spec
+                is_optional = False
+
             try:
                 actual_value = data[key]
             except KeyError:
-                raise exc.FieldValidationError(key, path=path)
+                if is_optional:
+                    if field_spec.has_default:
+                        output_dict[key] = field_spec.default_value
+                else:
+                    raise exc.FieldValidationError(key, path=path)
             else:
                 subpath = dict_item_path(path, key)
                 output_dict[key] = _validate(actual_value, item_schema,
