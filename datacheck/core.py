@@ -7,7 +7,7 @@ import inspect
 
 from datacheck.compat import native_type
 from datacheck.exceptions import (SchemaError, TypeValidationError,
-                                  FieldValidationError)
+                                  FieldValidationError, UnknownKeysError)
 from datacheck.path import init_path, list_item_path, dict_item_path
 
 
@@ -102,8 +102,9 @@ class Optional(DictField):
 
 
 class Dict(Validator):
-    def __init__(self, schema):
+    def __init__(self, schema, allow_unknown=False):
         self.schema = schema
+        self.allow_unknown = allow_unknown
 
     def validate(self, data, path=None):
         if path is None:
@@ -112,6 +113,7 @@ class Dict(Validator):
         if not isinstance(data, dict):
             raise TypeValidationError(data, native_type(dict), path=path)
 
+        unknown_keys = set(data)
         output_dict = {}
 
         for key, field_spec in iteritems(self.schema):
@@ -131,10 +133,14 @@ class Dict(Validator):
                 else:
                     raise FieldValidationError(key, path=path)
             else:
+                unknown_keys.remove(key)
                 subpath = dict_item_path(path, key)
                 output_dict[key] = _validate(actual_value, item_schema,
                                              path=subpath)
 
-        # TODO: handling of unknown fields
+        if (not self.allow_unknown) and unknown_keys:
+            raise UnknownKeysError(unknown_keys, path=path)
+        else:
+            output_dict.update({k: data[k] for k in unknown_keys})
 
         return output_dict

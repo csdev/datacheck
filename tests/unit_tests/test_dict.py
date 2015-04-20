@@ -6,7 +6,8 @@ import unittest
 from mock import NonCallableMagicMock, patch, call
 
 from datacheck.core import Dict, Required, Optional
-from datacheck.exceptions import TypeValidationError, FieldValidationError
+from datacheck.exceptions import (TypeValidationError, FieldValidationError,
+                                  UnknownKeysError)
 
 
 class TestDict(unittest.TestCase):
@@ -135,3 +136,30 @@ class TestDict(unittest.TestCase):
                          'input dict should not be modified')
 
         self.assertEqual(result, {'foo': 'bar'})
+
+    def test_dict_unknown_keys_ok(self):
+        dict_validator = Dict({}, allow_unknown=True)
+        input_dict = {
+            'foo': 'bar',
+        }
+
+        result = dict_validator.validate(input_dict, path=['mydict'])
+
+        self.assertIsNot(result, input_dict,
+                         'input dict should not be modified')
+
+        self.assertEqual(result, {'foo': 'bar'})
+
+    def test_dict_unknown_keys_error(self):
+        dict_validator = Dict({})
+        input_dict = {
+            'foo': 'bar',
+        }
+
+        with self.assertRaises(UnknownKeysError) as ctx:
+            dict_validator.validate(input_dict, path=['mydict'])
+
+        e = ctx.exception
+        self.assertEqual(len(e.unknown_keys), 1)
+        self.assertIn('foo', e.unknown_keys)
+        self.assertEqual(e.path, ['mydict'])
