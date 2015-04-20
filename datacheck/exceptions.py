@@ -52,6 +52,19 @@ class FieldValidationError(ValidationError):
         )
 
 
+class UnknownKeysError(ValidationError):
+    def __init__(self, unknown_keys, path=None):
+        super(UnknownKeysError, self).__init__(path=path)
+        self.unknown_keys = unknown_keys
+
+    def __str__(self):
+        return '%s: Unknown keys: %s' % (
+            path_to_str(self.path),
+            ', '.join([('"%s"' % k if isinstance(k, str) else str(k))
+                       for k in self.unknown_keys]),
+        )
+
+
 class DataValidationError(ValidationError):
     def __init__(self):
         super(DataValidationError, self).__init__()

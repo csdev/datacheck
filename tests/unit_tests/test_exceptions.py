@@ -5,7 +5,8 @@ import unittest
 
 from mock import patch
 
-from datacheck.exceptions import TypeValidationError, FieldValidationError
+from datacheck.exceptions import (TypeValidationError, FieldValidationError,
+                                  UnknownKeysError)
 
 
 class TestTypeValidationError(unittest.TestCase):
@@ -25,3 +26,11 @@ class TestFieldValidationError(unittest.TestCase):
 
         with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
             self.assertEqual(str(e), '<PATH>: Missing required field "foo"')
+
+
+class TestUnknownKeysError(unittest.TestCase):
+    def test_unknown_keys_error(self):
+        e = UnknownKeysError(['foo', 'bar', 123, None])
+
+        with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
+            self.assertEqual(str(e), '<PATH>: Unknown keys: "foo", "bar", 123, None')
