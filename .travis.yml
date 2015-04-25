@@ -10,9 +10,9 @@ script:
     - tox
 deploy:
     provider: pypi
-    user:
-        secure: WpS5sfI4i7iKqjulaLecaxL8705DB0uZUT4WoppPSbe1WAwFWkpArHN83/IXDYDgnVnpaVsbT/LqZPAh1sGyiz2i3pF2pfXICiDWlpCq0RPRwr5A3FLAzMSSgYFF5OBupXIkOnXCC0u2CexEchg33LI1+T0RkULCrYtIqqffqEQ=
+    user: Christopher.Sang
     password:
-        secure: HIvWY8H/cBAwoxofCTYSPIqYALsM0nPggJ/J2gm0FB56QP1+54Rbn0NHxZ6FCrXglhRxl0CMyl/kQ1wXJENlz50h671v9vKkaG0ACIDNxZG7lHNr8bI/KFcf6BwjBWVBCeiRxH9Bg7x11TPVpRgsuOgNkOM7p4s/Q4VP3/DnJTA=
+        secure: S4ac1FUEV4cnFonK+/mjDHJMIJLDs/FtWhkZPtHIQNkmITi8sfWyp4EoIgK3ujw5lTt22wnAvbUTFSKJRv/HtmTEzz1TRfd6494h3xTYHrjhMJiFWz10y90gUXr1ARraYPmVqVFTAX6TsCviW+FHop8/DRqKNlTzZheglyL+ptM=
     on:
         tags: true
+        repo: csdev/datacheck
