@@ -8,9 +8,6 @@ install:
     - pip install tox
 script:
     - tox
-branches:
-    only:
-        - master
 deploy:
     provider: pypi
     user:
