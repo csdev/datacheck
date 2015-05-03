@@ -46,10 +46,10 @@ class FieldValidationError(ValidationError):
         self.expected_field = expected_field
 
     def __str__(self):
-        return '%s: Missing required field "%s"' % (
-            path_to_str(self.path),
-            self.expected_field,
-        )
+        msg = 'Missing required field "%s"' % self.expected_field
+        if self.path:
+            msg = path_to_str(self.path) + ': ' + msg
+        return msg
 
 
 class UnknownKeysError(ValidationError):
