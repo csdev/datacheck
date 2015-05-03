@@ -50,7 +50,7 @@ class TestDict(unittest.TestCase):
             'y': float,
         }
 
-        expected_msg = r'<unnamed field>: Missing required field \"id\"'
+        expected_msg = r'^Missing required field \"id\"$'
         with self.assertRaisesRegexp(FieldValidationError, expected_msg):
             validate(data, schema)
 

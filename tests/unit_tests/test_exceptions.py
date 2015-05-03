@@ -22,10 +22,14 @@ class TestTypeValidationError(unittest.TestCase):
 
 class TestFieldValidationError(unittest.TestCase):
     def test_field_validation_error(self):
-        e = FieldValidationError('foo')
+        e = FieldValidationError('foo', path=['<PATH>'])
 
         with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
             self.assertEqual(str(e), '<PATH>: Missing required field "foo"')
+
+    def test_field_validation_error_no_path(self):
+        e = FieldValidationError('foo')
+        self.assertEqual(str(e), 'Missing required field "foo"')
 
 
 class TestUnknownKeysError(unittest.TestCase):
