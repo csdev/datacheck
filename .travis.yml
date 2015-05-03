@@ -4,6 +4,9 @@ python:
 env:
     - TOXENV=py27
     - TOXENV=py34
+branches:
+    except:
+        - /^dev-.+$/
 install:
     - pip install tox
 script:
