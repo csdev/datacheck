@@ -66,5 +66,14 @@ class UnknownKeysError(ValidationError):
 
 
 class DataValidationError(ValidationError):
-    def __init__(self):
-        super(DataValidationError, self).__init__()
+    def __init__(self, error_message, data, path=None):
+        super(DataValidationError, self).__init__(path=path)
+        self.error_message = error_message
+        self.data = data
+
+    def __str__(self):
+        return '%s: %s (Received value: %s)' % (
+            path_to_str(self.path),
+            self.error_message,
+            self.data
+        )
