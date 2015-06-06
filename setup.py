@@ -28,7 +28,7 @@ class Tox(TestCommand):
 # TODO: specify installation requirements
 setup(
     name='datacheck',
-    version='0.0.2',
+    version='0.1.0',
     packages=['datacheck'],
     url='https://github.com/csdev/datacheck',
     license='MIT',
@@ -37,7 +37,7 @@ setup(
     long_description='data validation library',
 
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2.7',
