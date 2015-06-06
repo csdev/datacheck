@@ -6,7 +6,7 @@ import unittest
 from mock import patch
 
 from datacheck.exceptions import (TypeValidationError, FieldValidationError,
-                                  UnknownKeysError)
+                                  UnknownKeysError, DataValidationError)
 
 
 class TestTypeValidationError(unittest.TestCase):
@@ -38,3 +38,11 @@ class TestUnknownKeysError(unittest.TestCase):
 
         with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
             self.assertEqual(str(e), '<PATH>: Unknown keys: "foo", "bar", 123, None')
+
+
+class TestDataValidationError(unittest.TestCase):
+    def test_data_validation_error(self):
+        e = DataValidationError('Name must start with a capital letter', 'asdf')
+
+        with patch('datacheck.exceptions.path_to_str', return_value='<PATH>'):
+            self.assertEqual(str(e), '<PATH>: Name must start with a capital letter (Received value: asdf)')
