@@ -28,7 +28,7 @@ class Tox(TestCommand):
 # TODO: specify installation requirements
 setup(
     name='datacheck',
-    version='0.1.0',
+    version='0.1.1',
     packages=['datacheck'],
     url='https://github.com/csdev/datacheck',
     license='MIT',
