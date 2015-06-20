@@ -3,6 +3,7 @@ from __future__ import (absolute_import, division,
 from builtins import *
 
 from future.utils import native
+from past.builtins import basestring as _basestring
 
 
 # The future module redefines certain built-in types so that our python3
@@ -34,3 +35,7 @@ def native_type(t):
 
 def native_data_type(x):
     return type(native(x))
+
+
+def is_unicode_or_byte_string(x):
+    return isinstance(x, _basestring)
