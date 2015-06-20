@@ -2,6 +2,8 @@ from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
 
+from datacheck.compat import is_unicode_or_byte_string
+
 
 def init_path():
     return []
@@ -18,7 +20,7 @@ def list_item_path(path, list_index):
 def _path_component_to_str(path_component):
     if isinstance(path_component, int):
         return '[%d]' % path_component
-    elif isinstance(path_component, str):
+    elif is_unicode_or_byte_string(path_component):
         return "['%s']" % path_component
     else:
         raise ValueError('invalid path_component')
@@ -32,7 +34,7 @@ def path_to_str(path):
     subpath_idx = 0
     if isinstance(path[0], int):
         base = '<unnamed list>'
-    elif isinstance(path[0], str):
+    elif is_unicode_or_byte_string(path[0]):
         base = path[0]
         subpath_idx = 1
 
