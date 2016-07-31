@@ -25,6 +25,15 @@ class Tox(TestCommand):
         sys.exit(errno)
 
 
+class ToxWithRecreate(Tox):
+    description = ('Run tests, but recreate the testing environments first. '
+                   '(Useful if the test dependencies change.)')
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.tox_args = '-r'
+
+
 # TODO: specify installation requirements
 setup(
     name='datacheck',
@@ -56,5 +65,8 @@ setup(
         'tox >= 1.9, < 3',
     ],
 
-    cmdclass={'test': Tox},
+    cmdclass={
+        'test': Tox,
+        'clean_test': ToxWithRecreate,
+    },
 )
