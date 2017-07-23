@@ -19,4 +19,5 @@ deploy:
         secure: S4ac1FUEV4cnFonK+/mjDHJMIJLDs/FtWhkZPtHIQNkmITi8sfWyp4EoIgK3ujw5lTt22wnAvbUTFSKJRv/HtmTEzz1TRfd6494h3xTYHrjhMJiFWz10y90gUXr1ARraYPmVqVFTAX6TsCviW+FHop8/DRqKNlTzZheglyL+ptM=
     on:
         tags: true
+        condition: "$TOXENV = py35"
         repo: csdev/datacheck
