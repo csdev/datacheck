@@ -34,7 +34,6 @@ class ToxWithRecreate(Tox):
         self.tox_args = '-r'
 
 
-# TODO: specify installation requirements
 setup(
     name='datacheck',
     version='0.1.1',
@@ -56,7 +55,7 @@ setup(
     ],
 
     install_requires=[
-        'future >= 0.14.3, < 0.16',
+        'future >= 0.14.3, < 0.17',
     ],
 
     # tox is responsible for setting up the test runner and its dependencies
