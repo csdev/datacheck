@@ -36,7 +36,7 @@ class ToxWithRecreate(Tox):
 
 setup(
     name='datacheck',
-    version='0.1.1',
+    version='0.2.0',
     packages=['datacheck'],
     url='https://github.com/csdev/datacheck',
     license='MIT',
