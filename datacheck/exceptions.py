@@ -1,6 +1,7 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
+from future.utils import python_2_unicode_compatible
 
 from datacheck.compat import native_data_type
 from datacheck.path import path_to_str
@@ -24,6 +25,7 @@ class MultipleValidationError(ValidationError):
         pass
 
 
+@python_2_unicode_compatible
 class TypeValidationError(ValidationError):
     def __init__(self, data, expected_type, path=None):
         super(TypeValidationError, self).__init__(path=path)
@@ -40,6 +42,7 @@ class TypeValidationError(ValidationError):
         )
 
 
+@python_2_unicode_compatible
 class FieldValidationError(ValidationError):
     def __init__(self, expected_field, path=None):
         super(FieldValidationError, self).__init__(path=path)
@@ -52,6 +55,7 @@ class FieldValidationError(ValidationError):
         return msg
 
 
+@python_2_unicode_compatible
 class UnknownKeysError(ValidationError):
     def __init__(self, unknown_keys, path=None):
         super(UnknownKeysError, self).__init__(path=path)
@@ -65,6 +69,7 @@ class UnknownKeysError(ValidationError):
         )
 
 
+@python_2_unicode_compatible
 class DataValidationError(ValidationError):
     def __init__(self, error_message, data, path=None):
         super(DataValidationError, self).__init__(path=path)
