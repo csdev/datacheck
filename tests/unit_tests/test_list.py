@@ -6,13 +6,15 @@ import unittest
 from mock import NonCallableMagicMock, patch, call
 
 from datacheck.core import List
-from datacheck.exceptions import TypeValidationError
+from datacheck.exceptions import TypeValidationError, DataValidationError
 
 
 class TestList(unittest.TestCase):
+    def setUp(self):
+        self.mock_validator = NonCallableMagicMock()
+
     def test_list_ok(self):
-        mock_validator = NonCallableMagicMock()
-        list_validator = List(mock_validator)
+        list_validator = List(self.mock_validator)
         input_list = [1, 2, 3, 4]
 
         # simulate underlying validator that passes all list elements through
@@ -26,7 +28,7 @@ class TestList(unittest.TestCase):
 
         # underlying validator should be called for each element in the list
         mock_validate.assert_has_calls(
-            [call(x, mock_validator, path=['mylist', i])
+            [call(x, self.mock_validator, path=['mylist', i])
              for i, x in enumerate(input_list)])
 
         self.assertIsNot(result, input_list,
@@ -35,9 +37,26 @@ class TestList(unittest.TestCase):
         self.assertEqual(result, input_list,
                          'input should be copied into result')
 
+    def test_list_less_than_or_equal_to_max_len(self):
+        list_validator = List(self.mock_validator, max_len=5)
+        input_list = [1, 2, 3, 4, 5]
+
+        def mock_validate(data, schema, **kwargs):
+            return data
+
+        with patch('datacheck.core._validate', side_effect=mock_validate) \
+                as mock_validate:
+            list_validator.validate(input_list, path=['mylist'])
+
+    def test_list_too_long(self):
+        list_validator = List(self.mock_validator, max_len=5)
+        input_list = [1, 2, 3, 4, 5, 6]
+
+        with self.assertRaises(DataValidationError):
+            list_validator.validate(input_list, path=['mylist'])
+
     def test_list_type_error(self):
-        mock_validator = NonCallableMagicMock()
-        list_validator = List(mock_validator)
+        list_validator = List(self.mock_validator)
         input_list = 123
 
         with self.assertRaises(TypeValidationError) as ctx:

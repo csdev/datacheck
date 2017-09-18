@@ -4,7 +4,8 @@ from __future__ import (absolute_import, division,
 import unittest
 
 from datacheck import validate
-from datacheck.exceptions import TypeValidationError
+from datacheck.core import List
+from datacheck.exceptions import TypeValidationError, DataValidationError
 
 
 class TestList(unittest.TestCase):
@@ -13,6 +14,17 @@ class TestList(unittest.TestCase):
         result = validate(input, [int])
         self.assertIsNot(result, input, 'input list should not be modified')
         self.assertEqual(result, input, 'input should be copied into result')
+
+    def test_list_less_than_or_equal_to_max_len(self):
+        input = [123, 456]
+        result = validate(input, List(int, max_len=2))
+        self.assertIsNot(result, input, 'input list should not be modified')
+        self.assertEqual(result, input, 'input should be copied into result')
+
+    def test_list_too_long(self):
+        expected_msg = r'<unnamed field>: List length must be less than 4, was 5'
+        with self.assertRaisesRegexp(DataValidationError, expected_msg):
+            validate([1, 2, 3, 4, 5], List(int, max_len=4))
 
     def test_list_type_error(self):
         expected_msg = r'<unnamed field>: Expected list, got int \(123\)'

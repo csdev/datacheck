@@ -7,7 +7,8 @@ import inspect
 
 from datacheck.compat import native_type
 from datacheck.exceptions import (SchemaError, TypeValidationError,
-                                  FieldValidationError, UnknownKeysError)
+                                  FieldValidationError, UnknownKeysError,
+                                  DataValidationError)
 from datacheck.path import init_path, list_item_path, dict_item_path
 
 
@@ -61,8 +62,9 @@ class Type(Validator):
 
 
 class List(Validator):
-    def __init__(self, schema):
+    def __init__(self, schema, max_len=None):
         self.schema = schema
+        self.max_len = max_len
 
     def validate(self, data, path=None):
         if path is None:
@@ -70,6 +72,12 @@ class List(Validator):
 
         if not isinstance(data, list):
             raise TypeValidationError(data, native_type(list), path=path)
+
+        len_data = len(data)
+        if self.max_len is not None and len_data > self.max_len:
+            error_msg = ('List length must be '
+                         'less than %s, was %s' % (self.max_len, len_data))
+            raise DataValidationError(error_msg, data, path=path)
 
         output_list = []
 
