@@ -36,7 +36,7 @@ class ToxWithRecreate(Tox):
 
 setup(
     name='datacheck',
-    version='0.2.1',
+    version='0.3.0-rc0',
     packages=['datacheck'],
     url='https://github.com/csdev/datacheck',
     license='MIT',
@@ -48,20 +48,20 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Utilities',
     ],
 
     install_requires=[
-        'future >= 0.14.3, < 0.17',
+        'future >= 0.14.3',
     ],
 
     # tox is responsible for setting up the test runner and its dependencies
     # (e.g., code coverage tools) -- see the tox.ini file
     tests_require=[
-        'tox >= 1.9, < 3',
+        'tox >= 4, < 5',
     ],
 
     cmdclass={
