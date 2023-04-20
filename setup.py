@@ -36,7 +36,7 @@ class ToxWithRecreate(Tox):
 
 setup(
     name='datacheck',
-    version='0.3.0-rc0',
+    version='0.3.0',
     packages=['datacheck'],
     url='https://github.com/csdev/datacheck',
     license='MIT',
@@ -45,7 +45,7 @@ setup(
     long_description='data validation library',
 
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 7 - Inactive',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.7',
